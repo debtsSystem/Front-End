@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PaymentListComponent } from './pages/payment-list/payment-list.component';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PaymentListComponent, HttpClientModule],
+  standalone: true,
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  imports: [RouterOutlet, PaymentListComponent]
 })
 export class AppComponent {
   title = 'debts-system';

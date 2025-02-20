@@ -1,25 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { PaymentService } from '../../server/payment.service/payment.service.component'; 
+import { PaymentService } from '../../server/payment.service/payment.service'; 
 import { Payment } from '../../models/payment.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-payment-list',
-  imports: [],
-  standalone:true,
+  standalone: true,
   templateUrl: './payment-list.component.html',
-  styleUrl: './payment-list.component.css'
+  styleUrls: ['./payment-list.component.css'],
+  providers: [PaymentService],
+  imports: [CommonModule],
 })
 export class PaymentListComponent implements OnInit {
-  payment: Payment[] | undefined;
+  payments: Payment[] = []; // עדכון לשם המשתנה
 
   constructor(private paymentService: PaymentService) { }
 
   ngOnInit(): void {
-    this.paymentService.getPayment().subscribe(data => {
-      this.payment = data;
+    this.paymentService.getPayment().subscribe(data => { // עדכון לשם השיטה
+      this.payments = data;
     });
   }
-
 }
-
-  
