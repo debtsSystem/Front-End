@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { PaymentListComponent } from './pages/payment-list/payment-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './pages/navbar/navbar.component';
 
 
@@ -10,7 +10,7 @@ import { NavbarComponent } from './pages/navbar/navbar.component';
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [RouterModule, PaymentListComponent, HttpClientModule, NavbarComponent]
+  imports: [ NavbarComponent,HttpClientModule]
 })
 export class AppComponent {
  
