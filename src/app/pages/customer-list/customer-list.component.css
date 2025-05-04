@@ -1,0 +1,36 @@
+.p-table {
+    border: 3px solid rgb(199, 24, 24)
+}
+
+ 
+.custom-table {
+    border: 3px solid rgb(199, 24, 24) ; /* מסגרת שחורה עבה */
+    border-radius: 5px; /* פינות מעוגלות */
+    margin: 20px auto; /* מרכז את הטבלה עם ריווח סביב */
+    width: 80%; /* קובע את רוחב הטבלה */
+    border-collapse: collapse; /* מבטל רווחים בין תאי הטבלה */
+}
+
+.custom-table th, .custom-table td {
+    text-align: center; /* יישור טקסט למרכז */
+    padding: 10px; /* ריווח פנימי */
+    border: 30px solid rgb(199, 24, 24) ; /* מסגרת תאים */
+}
+
+.custom-table th {
+    background-color: #f4f4f4; /* צבע רקע לכותרות */
+}
+
+.custom-table tr:hover {
+    background-color: #e0e0e0; /* צבע רקע בעת ריחוף */
+}
+
+.card {
+    margin: 20px; /* ריווח סביב הקארד */
+    display: flex; /* מאפשר שימוש ב-flexbox */
+    justify-content: center; /* מרכז את הקארד */
+}
+
+.card-body {
+    text-align: center; /* יישור טקסט למרכז */
+} 

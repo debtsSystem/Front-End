@@ -1,1 +1,130 @@
-<p>sales-list works!</p>
+<div class="card">
+
+<h1>רישום חובות</h1>
+<div class="navigation-buttons">
+    <button 
+      pButton 
+      [ngClass]="{'p-button-outlined': displayMode !== 'sales'}"
+      label="מכירות" 
+      icon="pi pi-shopping-cart" 
+      (click)="switchToSales()"
+      class="p-mr-2"
+    ></button>
+    <button 
+      pButton 
+      [ngClass]="{'p-button-outlined': displayMode !== 'customers'}"
+      label="לקוחות" 
+      icon="pi pi-users" 
+      (click)="switchToCustomers()"
+    ></button>
+  </div>
+  <app-customer-list *ngIf="displayMode === 'customers'"></app-customer-list>
+
+
+
+
+ <!-- טבלת מכירות -->
+ <div *ngIf="displayMode === 'sales'">
+    <h2>רשימת מכירות</h2>    
+    <div class="p-d-flex p-jc-between p-mb-4">
+      <div class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input 
+          type="text" 
+          pInputText 
+          [(ngModel)]="searchTerm" 
+          (input)="applyFilterGlobal($event)" 
+          placeholder="חיפוש מכירה..." 
+          class="p-mb-2"
+        />
+        <button pButton label="נקה סינון" class="p-button-outlined p-ml-2" (click)="clearFilters()"></button>
+      </div>
+    </div>
+  
+    <p-table 
+      #dt
+      [value]="sales" 
+      [loading]="loading"
+      [(selection)]="selectedSales"
+      [paginator]="true" 
+      [rows]="10"
+      [globalFilterFields]="['saleId', 'saleName', 'eventTime']"
+      [filterDelay]="0"
+      [tableStyle]="{'min-width': '75rem'}"
+      styleClass="p-datatable-gridlines"
+      [rowHover]="true"
+      dataKey="id"
+      responsiveLayout="scroll"
+    >
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          מכירות
+          <span *ngIf="selectedSales.length > 0">
+            ({{selectedSales.length}} מכירות נבחרו)
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="saleId">מספר מכירה <p-sortIcon field="saleId"></p-sortIcon></th>
+          <th pSortableColumn="saleName">שם מכירה <p-sortIcon field="saleName"></p-sortIcon></th>
+          <th pSortableColumn="eventTime">תאריך <p-sortIcon field="eventTime"></p-sortIcon></th>
+          <th>פעולות</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>
+            <input pInputText type="text" (input)="applyFilterColumn($event, 'saleId')" placeholder="חיפוש לפי מספר" class="p-column-filter">
+          </th>
+          <th>
+            <input pInputText type="text" (input)="applyFilterColumn($event, 'saleName')" placeholder="חיפוש לפי שם" class="p-column-filter">
+          </th>
+          <th>
+            <input pInputText type="text" (input)="applyFilterColumn($event, 'eventTime')" placeholder="חיפוש לפי תאריך" class="p-column-filter">
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-sale>
+        <tr>
+          <td>{{sale.saleId}}</td>
+          <td>{{sale.saleName}}</td>
+          <td>{{sale.eventTime}}</td>
+          <td>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" title="ערוך"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" title="מחק"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">לא נמצאו מכירות.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-dialog
+    [(visible)]="displayDebtsDialog" 
+    [style]="{width: '50vw'}" 
+    [modal]="true" 
+    [draggable]="false" 
+    [resizable]="false"
+    header="הוספת חוב למכירה"
+    (onHide)="closeDebtsDialog()"
+  >
+    <div *ngIf="selectedSale">
+      <h3>הוספת חוב למכירה #{{selectedSale.saleId}}</h3>
+      <p>שם מכירה: {{selectedSale.saleName}}</p>
+      <p>תאריך: {{selectedSale.eventTime }}</p>
+      
+      <!-- קומפוננטת החובות -->
+      <app-debts-list  
+        [saleId]="selectedSale.saleId" 
+      ></app-debts-list>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <button pButton label="סגור" icon="pi pi-times" (click)="closeDebtsDialog()" class="p-button-text"></button>
+    </ng-template>
+  </p-dialog>
+</div>
