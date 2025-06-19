@@ -69,10 +69,9 @@
           <th pSortableColumn="saleId">מספר מכירה <p-sortIcon field="saleId"></p-sortIcon></th>
           <th pSortableColumn="saleName">שם מכירה <p-sortIcon field="saleName"></p-sortIcon></th>
           <th pSortableColumn="eventTime">תאריך <p-sortIcon field="eventTime"></p-sortIcon></th>
-          <th>פעולות</th>
+          <th>להוספת חוב</th>
         </tr>
         <tr>
-          <th></th>
           <th>
             <input pInputText type="text" (input)="applyFilterColumn($event, 'saleId')" placeholder="חיפוש לפי מספר" class="p-column-filter">
           </th>
@@ -91,8 +90,7 @@
           <td>{{sale.saleName}}</td>
           <td>{{sale.eventTime}}</td>
           <td>
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" title="ערוך"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" title="מחק"></button>
+            <button pButton pRipple icon="pi pi-plus-circle" class="p-button-rounded p-button-primary" title="הוספת חוב" (click)="openDebtsDialog(sale)"></button>
           </td>
         </tr>
       </ng-template>
@@ -112,16 +110,35 @@
     header="הוספת חוב למכירה"
     (onHide)="closeDebtsDialog()"
   >
-    <div *ngIf="selectedSale">
+  <div *ngIf="selectedSale" class="selected-sale-card">
+    <div class="sale-header">
       <h3>הוספת חוב למכירה #{{selectedSale.saleId}}</h3>
-      <p>שם מכירה: {{selectedSale.saleName}}</p>
-      <p>תאריך: {{selectedSale.eventTime }}</p>
-      
-      <!-- קומפוננטת החובות -->
-      <app-debts-list  
-        [saleId]="selectedSale.saleId" 
-      ></app-debts-list>
+      <span class="sale-badge">{{selectedSale.saleName}}</span>
     </div>
+    
+    <div class="sale-details">
+      <div class="detail-item">
+        <i class="pi pi-tag detail-icon"></i>
+        <span class="detail-label">שם מכירה:</span>
+        <span class="detail-value">{{selectedSale.saleName}}</span>
+      </div>
+      
+      <div class="detail-item">
+        <i class="pi pi-calendar detail-icon"></i>
+        <span class="detail-label">תאריך:</span>
+        <span class="detail-value">{{selectedSale.eventTime | date:'dd/MM/yyyy'}}</span>
+      </div>
+    </div>
+    
+    <!-- קומפוננטת החובות -->
+    <div class="debts-container">
+      <app-debts-list 
+        *ngIf="displayDebtsDialog"
+        [selectedSale]="selectedSale">
+      </app-debts-list>
+    </div>
+  </div>
+  
     
     <ng-template pTemplate="footer">
       <button pButton label="סגור" icon="pi pi-times" (click)="closeDebtsDialog()" class="p-button-text"></button>

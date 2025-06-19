@@ -9,5 +9,5 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './customer.component.css'
 })
 export class CustomerComponent {
-
+   
 }

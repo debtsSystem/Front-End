@@ -14,12 +14,12 @@ export const routes: Routes = [{
       path: 'navbar', component: NavbarComponent,
       children: [
         {
-          path: 'customers', component: CustomerComponent,
-          children: [
-            { path: 'regularCustomer', component: RegularcustomerListComponent },
-            { path: 'customer', component: CustomerListComponent },
+          path: 'customers', component: CustomerListComponent
+          // children: [
+          //   { path: 'regularCustomer', component: RegularcustomerListComponent },
+          //   { path: 'customer', component: CustomerListComponent },
 
-          ]
+          // ]
         },
         { path: "debts", component: DebtsListComponent },
         { path: "sales", component: SalesListComponent }

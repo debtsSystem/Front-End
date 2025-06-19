@@ -64,7 +64,11 @@ export class SalesListComponent implements OnInit {
       });
     }
   }
-
+  openAddDebtDialog(sale: Sales) {
+    this.selectedSale = sale;
+    this.displayDebtsDialog = true;
+    console.log('Opening debt dialog for sale:', sale);
+  }
   // פונקציה להחלפת התצוגה
   switchToSales() {
     this.displayMode = 'sales';

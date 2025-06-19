@@ -29,7 +29,8 @@ import { RippleModule } from 'primeng/ripple';
 export class CustomerListComponent implements OnInit {
 
   customers!: Customer[];
-
+  openCustomer:boolean = false;
+  openRegular:boolean = false;
   // representatives!: Representative[];
 
   statuses!: any[];
@@ -97,24 +98,6 @@ this.customerService.getCustomer().subscribe({
       table.clear();
   }
 
-  // getSeverity(status: string) {
-  //     switch (status) {
-  //         case 'unqualified':
-  //             return 'danger';
-
-  //         case 'qualified':
-  //             return 'success';
-
-  //         case 'new':
-  //             return 'info';
-
-  //         case 'negotiation':
-  //             return 'warn';
-
-  //         case 'renewal':
-  //             return null;
-  //     }
-  // }
 }
 
   

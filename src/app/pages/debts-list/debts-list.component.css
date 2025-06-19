@@ -1,0 +1,275 @@
+/* כרטיס ראשי */
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* סגנונות טופס */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+/* עיצוב דיאלוג */
+:host ::ng-deep .p-dialog {
+    direction: rtl;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 1.25rem 1.5rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 1.5rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+    border-top: 1px solid #f0f0f0;
+    padding: 1.25rem 1.5rem;
+    text-align: right;
+}
+
+/* עיצוב רכיבי PrimeNG */
+:host ::ng-deep .p-dropdown {
+    width: 100%;
+}
+
+:host ::ng-deep .p-calendar {
+    width: 100%;
+}
+
+:host ::ng-deep .p-inputtext {
+    width: 100%;
+    padding: 0.75rem;
+}
+
+:host ::ng-deep .p-inputnumber {
+    width: 100%;
+}
+
+:host ::ng-deep .p-togglebutton.p-button {
+    width: 120px;
+    height: 40px;
+}
+
+:host ::ng-deep .p-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:host ::ng-deep .p-button .p-button-icon-left {
+    margin-right: 0.5rem;
+}
+
+/* סגנונות כפתורים */
+:host ::ng-deep .p-button.p-button-success {
+    background: #2ecc71;
+    border-color: #2ecc71;
+}
+
+:host ::ng-deep .p-button.p-button-success:hover {
+    background: #27ae60;
+    border-color: #27ae60;
+}
+
+/* אנימציות */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+:host ::ng-deep .p-dialog.p-component {
+    animation: fadeIn 0.3s;
+}
+
+/* תיקון כיוון טקסט */
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    text-align: right;
+}
+
+:host ::ng-deep .p-calendar .p-datepicker {
+    direction: ltr;
+}
+
+/* עיצוב שדה הערות */
+textarea.w-full {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* סגנונות לתצוגה מותאמת למובייל */
+@media screen and (max-width: 768px) {
+    :host ::ng-deep .p-dialog {
+        width: 95% !important;
+        max-width: none !important;
+    }
+    
+    .card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .card h2 {
+        margin-bottom: 1rem;
+    }
+
+}
+/* עיצוב לדוח החובות המלא */
+.full-debts-report {
+    padding: 1.5rem;
+  }
+  
+  .full-debts-report h2 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-right: 1rem;
+  }
+  
+  .full-debts-report h2:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0.25rem;
+    height: 1.5rem;
+    width: 4px;
+    background-color: #e74c3c; /* צבע אדום לחובות */
+    border-radius: 2px;
+  }
+  
+  /* עיצוב לפילטרים */
+  .report-filters {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  /* עיצוב לכרטיסי סיכום */
+  .debts-summary {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .summary-card {
+    flex: 1;
+    min-width: 200px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .summary-title {
+    color: #7f8c8d;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .summary-value {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  /* צבעים שונים לכרטיסי סיכום */
+  .summary-card:nth-child(1) .summary-value {
+    color: #e74c3c; /* אדום לסה"כ חובות */
+  }
+  
+  .summary-card:nth-child(2) .summary-value {
+    color: #27ae60; /* ירוק לחובות ששולמו */
+  }
+  
+  .summary-card:nth-child(3) .summary-value {
+    color: #f39c12; /* כתום לחובות פתוחים */
+  }
+  
+  /* התאמה למסכים קטנים */
+  @media (max-width: 768px) {
+    .filter-options {
+      margin-top: 1rem;
+    }
+    
+    .summary-card {
+      flex: 1 1 100%;
+    }
+  }
+/* עיצוב לטבלת החובות */
+:host ::ng-deep .debt-amount {
+    font-weight: 600;
+    color: #e74c3c;
+  }
+  
+  :host ::ng-deep .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  :host ::ng-deep .empty-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    color: #7f8c8d;
+  }
+  
+  :host ::ng-deep .empty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #bdc3c7;
+  }
+  
+  :host ::ng-deep .table-summary {
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: left;
+  }
+/* עיצוב לכפתור ייצוא לאקסל */
+:host ::ng-deep .p-button-success {
+    background-color: #27ae60;
+    border-color: #27ae60;
+  }
+  
+  :host ::ng-deep .p-button-success:hover {
+    background-color: #219653;
+    border-color: #219653;
+  }
+  
+  :host ::ng-deep .p-button-success .pi-file-excel {
+    margin-left: 0.5rem;
+  }
+      
