@@ -1,8 +1,8 @@
 
 export interface Debts {
-    debtId: number;
+    debtsId: number;
     customerId: number;
-    sumOfDebt: number;
+    sumOfDebts: number;
     saleId: number;
     isPaid: boolean;
     date: Date;

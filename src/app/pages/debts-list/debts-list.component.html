@@ -1,1 +1,332 @@
-<p>debts-list works!</p>
+<!-- תצוגה שונה בהתאם למקור הניווט -->
+<div *ngIf="isNavigatedFromNavbar" class="full-debts-report">
+    <h2>דוח חובות מלא</h2>
+    <div class="report-filters">
+        <div class="p-d-flex p-jc-between p-mb-4">
+            <div class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText [(ngModel)]="searchTerm" (input)="applyFilterGlobal($event)"
+                    placeholder="חיפוש חוב..." class="p-mb-2" />
+                <button pButton label="נקה סינון" class="p-button-outlined p-ml-2" (click)="clearFilters()"></button>
+            </div>
+
+            <!-- פילטרים נוספים לדוח המלא -->
+            <div class="filter-options">
+                <p-dropdown [options]="statusOptions" [(ngModel)]="selectedStatus" placeholder="סטטוס תשלום"
+                    (onChange)="filterByStatus()">
+                </p-dropdown>
+<!-- לא עובד טוב -->
+                <p-calendar [(ngModel)]="dateRange" selectionMode="range" [readonlyInput]="true"
+                    placeholder="טווח תאריכים" (onSelect)="filterByDateRange()">
+                </p-calendar>
+            </div>
+        </div>
+    </div>
+
+    <p-table 
+    #dt 
+    [value]="allDebts" 
+    [loading]="loading"
+    [paginator]="true" 
+    [rows]="10"
+    [globalFilterFields]="['debtId', 'customerName', 'saleName', 'sumOfDebts', 'date', 'isPaid', 'nots']"
+    [filterDelay]="0"
+    [tableStyle]="{'min-width': '75rem'}"
+    styleClass="p-datatable-gridlines"
+    [rowHover]="true"
+    dataKey="id"
+    responsiveLayout="scroll">
+    
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+        רשימת חובות
+        <span *ngIf="allDebts.length > 0">
+          (סה"כ {{allDebts.length}} חובות)
+        </span>
+      </div>
+    </ng-template>
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- ------------------------------------------------------ -->
+    <!-- customerId: number;
+    sumOfDebt: number;
+    saleId: number;
+    isPaid: boolean;
+    date: Date;
+    nots: string;
+    paymentType: number -->
+        <th pSortableColumn="debtsId">מספר חוב <p-sortIcon field="debtsId"></p-sortIcon></th>
+        <th pSortableColumn="customerName">שם לקוח <p-sortIcon field="customerName"></p-sortIcon></th>
+        <th pSortableColumn="saleName">שם מכירה <p-sortIcon field="saleName"></p-sortIcon></th>
+        <th pSortableColumn="sumOfDebts">סכום החוב <p-sortIcon field="sumOfDebts"></p-sortIcon></th>
+        <th pSortableColumn="date">תאריך <p-sortIcon field="date"></p-sortIcon></th>
+        <th pSortableColumn="isPaid">סטטוס <p-sortIcon field="isPaid"></p-sortIcon></th>
+        <th>פעולות</th>
+      </tr>
+      <tr>
+        <th>
+          <input pInputText type="text" (input)="applyFilterColumn($event, 'debtsId')" placeholder="חיפוש לפי מספר" class="p-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="applyFilterColumn($event, 'customerName')" placeholder="חיפוש לפי לקוח" class="p-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="applyFilterColumn($event, 'saleName')" placeholder="חיפוש לפי מכירה" class="p-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="applyFilterColumn($event, 'sumOfDebts')" placeholder="חיפוש לפי סכום" class="p-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="applyFilterColumn($event, 'date')" placeholder="חיפוש לפי תאריך" class="p-column-filter">
+        </th>
+        <th>
+          <p-dropdown 
+            [options]="statusOptions" 
+            (onChange)="applyFilterColumn($event, 'isPaid')" 
+            placeholder="סטטוס" 
+            [showClear]="true"
+            class="p-column-filter">
+          </p-dropdown>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-debt>
+      <tr>
+        <td>{{debt.debtsId}}</td>
+        <td>{{debt.customerName}}</td>
+        <td>{{debt.saleName}}</td>
+        <td>
+          <span class="debt-amount">{{debt.sumOfDebts | currency:'ILS':'symbol':'1.0-0'}}</span>
+        </td>
+        <td>{{debt.date | date:'dd/MM/yyyy'}}</td>
+        <td>
+          <p-tag 
+            [value]="debt.isPaid ? 'שולם' : 'לא שולם'" 
+            [severity]="debt.isPaid ? 'success' : 'danger'">
+          </p-tag>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button 
+              pButton 
+              pRipple 
+              icon="pi pi-pencil" 
+              class="p-button-rounded p-button-warning p-mr-2" 
+              title="עריכת חוב" 
+              (click)="editDebt(debt)">
+            </button>
+            <button 
+              pButton 
+              pRipple 
+              icon="pi pi-check-circle" 
+              class="p-button-rounded p-button-success p-mr-2" 
+              title="סמן כשולם" 
+              [disabled]="debt.isPaid"
+              (click)="markAsPaid(debt)">
+            </button>
+            <button 
+              pButton 
+              pRipple 
+              icon="pi pi-trash" 
+              class="p-button-rounded p-button-danger" 
+              title="מחיקת חוב" 
+              (click)="deleteDebt(debt)">
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center">
+          <div class="empty-message">
+            <i class="pi pi-info-circle empty-icon"></i>
+            <p>לא נמצאו חובות.</p>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    
+    <!-- <ng-template pTemplate="summary">
+      <div class="table-summary">
+        סה"כ חובות: {{totalDebtsAmount | currency:'ILS':'symbol':'1.0-0'}} | 
+        שולמו: {{paidDebtsAmount | currency:'ILS':'symbol':'1.0-0'}} | 
+        טרם שולמו: {{unpaidDebtsAmount | currency:'ILS':'symbol':'1.0-0'}}
+      </div>
+    </ng-template> -->
+  </p-table>
+  
+  
+  
+  
+
+    <!-- סיכום חובות -->
+    <div class="debts-summary">
+        <div class="summary-card">
+            <div class="summary-title">סה"כ חובות</div>
+            <div class="summary-value">{{ totalDebtsAmount | currency:'ILS':'symbol':'1.0-0' }}</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">חובות ששולמו</div>
+            <div class="summary-value">{{ paidDebtsAmount | currency:'ILS':'symbol':'1.0-0' }}</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">חובות פתוחים</div>
+            <div class="summary-value">{{ unpaidDebtsAmount | currency:'ILS':'symbol':'1.0-0' }}</div>
+        </div>
+    </div>
+    <button 
+    pButton 
+    label="ייצוא לאקסל" 
+    icon="pi pi-file-excel" 
+    class="p-button-success" 
+    (click)="exportToExcel()">
+  </button>
+</div>
+
+
+<div  *ngIf="!isNavigatedFromNavbar"
+    class="debt-form-container">
+    <div class="debt-form-card">
+        <div class="debt-form-header">
+            <h2>הוספת חוב חדש</h2>
+            <p class="subtitle">אנא מלא את כל פרטי החוב</p>
+        </div>
+        
+        <form (ngSubmit)="saveDebt()" #debtForm="ngForm" class="p-fluid">
+            <div class="p-grid form-grid">
+                <div class="p-col-12 p-md-6 form-group">
+                    <label for="customerId" class="form-label">לקוח</label>
+                    <p-dropdown 
+                        id="customerId" 
+                        [options]="customers" 
+                        [(ngModel)]="debt.customerId" 
+                        optionLabel="customerName" 
+                        optionValue="costomerId"
+                        placeholder="בחר לקוח" 
+                        name="customerId"
+                        styleClass="form-control"
+                        [required]="true">
+                    </p-dropdown>
+                </div>
+                
+                <div class="p-col-12 p-md-6 form-group">
+                    <label for="saleId" class="form-label">מכירה</label>
+                    <div *ngIf="selectedSaleObject" class="selected-sale-display">
+                        <span class="sale-name">{{ selectedSaleObject.saleName }}</span>
+                        <small class="sale-date">{{ selectedSaleObject.eventTime | date:'dd/MM/yyyy' }}</small>
+                        <input type="hidden" name="saleId" [(ngModel)]="debt.saleId">
+                    </div>
+                   <p-dropdown 
+                        *ngIf="!selectedSaleObject"
+                        id="saleId" 
+                        [options]="sales" 
+                        [(ngModel)]="debt.saleId" 
+                        optionLabel="saleName" 
+                        optionValue="saleId"
+                        placeholder="בחר מכירה" 
+                        name="saleId"
+                        [required]="true">
+                    </p-dropdown>
+                </div>
+                
+                <div class="p-col-12 p-md-6 form-group">
+                    <label for="sumOfDebt" class="form-label">סכום החוב</label>
+                    <p-inputNumber 
+                        id="sumOfDebt" 
+                        [(ngModel)]="debt.sumOfDebts" 
+                        mode="currency" 
+                        currency="ILS" 
+                        locale="he-IL"
+                        name="sumOfDebt"
+                        styleClass="form-control"
+                        [required]="true">
+                    </p-inputNumber>
+                </div>
+                
+                <div class="p-col-12 p-md-6 form-group">
+                    <label for="date" class="form-label">תאריך</label>
+                    <p-calendar 
+                        id="date" 
+                        [(ngModel)]="debt.date" 
+                        dateFormat="dd/mm/yy"
+                        name="date"
+                        [showIcon]="true"
+                        styleClass="form-control"
+                        [required]="true">
+                    </p-calendar>
+                </div>
+                
+                <div class="p-col-12 p-md-6 form-group">
+                    <label for="paymentType" class="form-label">סוג תשלום</label>
+                    <p-dropdown 
+                        id="paymentType" 
+                        [options]="paymentTypes" 
+                        [(ngModel)]="debt.paymentType" 
+                        optionLabel="type" 
+                        optionValue="code"
+                        placeholder="בחר סוג תשלום" 
+                        name="paymentType"
+                        styleClass="form-control"
+                        [required]="true">
+                    </p-dropdown>
+                </div>
+                
+                <div class="p-col-12 p-md-6 form-group payment-status-group">
+                    <label for="isPaid" class="form-label">סטטוס תשלום</label>
+                    <div class="status-toggle-container">
+                        <p-toggleButton 
+                            id="isPaid" 
+                            [(ngModel)]="debt.isPaid" 
+                            onLabel="שולם" 
+                            offLabel="לא שולם"
+                            offIcon="pi pi-times"
+                            name="isPaid"
+                            styleClass="status-toggle">
+                        </p-toggleButton>
+                    </div>
+                </div>
+                
+                <div class="p-col-12 form-group">
+                    <label for="nots" class="form-label">הערות</label>
+                    <textarea 
+                        id="nots" 
+                        pInputTextarea 
+                        [(ngModel)]="debt.nots" 
+                        rows="4" 
+                        name="nots"
+                        class="form-control notes-input"
+                        placeholder="הוסף הערות או פרטים נוספים כאן...">
+                    </textarea>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button 
+                    pButton 
+                    type="button" 
+                    label="ביטול" 
+                    icon="pi pi-times"
+                    class="p-button-secondary cancel-button"
+                    (click)="resetForm()">
+                </button>
+                <button 
+                    pButton 
+                    type="submit" 
+                    label="שמירה" 
+                    icon="pi pi-check"
+                    class="p-button-success save-button"
+                    [disabled]="!debtForm.valid">
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<p-toast position="top-right"></p-toast>

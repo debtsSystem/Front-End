@@ -1,1 +1,73 @@
-<p>customer-list works!</p>
+
+
+<div class="card">
+    <p-table #dt2 [value]="customers" dataKey="id" [loading]="loading" styleClass="custom-table"
+        [globalFilterFields]="['name', 'id','defultPhone','homePhone' ]">
+        <ng-template #caption>
+            <div class="flex">
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="dt2.filterGlobal($event, 'contains')" placeholder="חיפוש" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="width:22%">שם</th>
+                <th style="width:22%">ת.ז.</th>
+                <!-- <th style="width:22%">טלפון</th> -->
+            </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="customerName" placeholder="חיפוש לפי שם"
+                        ariaLabel="Filter Name"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="customerId" placeholder="חיפוש לפי ת.ז."
+                        ariaLabel="Filter id"></p-columnFilter>
+                </th>
+                <!-- <th>
+                    <p-columnFilter type="text" field="defultPhone" placeholder="חיפוש לפי טלפון"
+                        ariaLabel="Filter id"></p-columnFilter>
+                </th> -->
+            </tr>
+        </ng-template>
+        <ng-template #body let-customer>
+            <tr>
+                <td>
+                    {{ customer.customerName }}
+                </td>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <span>{{ customer.customerId }}</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span>{{ customer.defultPhone }}</span>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="2">לקוח לא נמצא </td>
+            </tr>
+           
+        </ng-template>
+           
+       
+    </p-table>
+</div>
+<div class="card">
+    <div class="flex justify-center flex-wrap gap-4 mb-6">
+    </div>
+</div>
+
+<p-button label="להוספת לקוח" routerLink="/customers/add"></p-button>
+
+<!-- (input)="dt2.filterGlobal($event.target.value, 'contains')" -->
+
+<!-- <input type="text" (input)="dt2.filter($event, 'customerId', 'contains')" placeholder="חיפוש לפי ת.ז." /> -->

@@ -1,0 +1,19 @@
+<div class="card">
+    <div class="flex justify-center flex-wrap gap-4 mb-6">
+        <!-- <p-button icon="pi pi-money-bill"  [rounded]="true" [text]="true" [raised]="true" /> -->
+        <p-button icon="pi pi-users" label="משפחות" [rounded]="true" [text]="true" [raised]="true" severity="warn"  [routerLink]="['/navbar/customers']" routerLinkActive="active" />
+        <p-button icon="pi pi-list" label="דוח חובות" [rounded]="true" [text]="true" [raised]="true" severity="success" [routerLink]="['/navbar/debts']" routerLinkActive="active"/>
+        <p-button icon="pi pi-file-edit" label="רישום חובות" [rounded]="true" [text]="true" [raised]="true" severity="info" [routerLink]="['/navbar/sales']" routerLinkActive="active"/>
+        <!-- <p-button icon="pi pi-bell" [rounded]="true" [text]="true" [raised]="true" severity="warn" />
+        <p-button icon="fas fa-money-bill-wave" [rounded]="true" [text]="true" [raised]="true" severity="help" />
+        <p-button icon="fas fa-coins" [rounded]="true" [text]="true" [raised]="true" severity="danger" /> -->
+       
+    </div>
+    <!-- <p>מטבעות: <i class="fas fa-coins"></i></p>
+    <p>שטר דולר: <i class="fas fa-dollar-sign"></i></p>
+    <p>שטרות כסף: <i class="fas fa-money-bill-wave"></i></p>
+    <p>שטרות כסף (ישן): <i class="fas fa-money-bill"></i></p>
+    <p>כרטיס אשראי: <i class="fas fa-credit-card"></i></p> -->
+
+</div>
+<router-outlet></router-outlet>
